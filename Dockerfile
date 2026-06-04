@@ -1,5 +1,4 @@
-# Build stage
-FROM eclipse-temurin:17-jdk-focal AS builder
+FROM eclipse-temurin:17-jdk
 
 WORKDIR /app
 
@@ -8,13 +7,6 @@ COPY . .
 RUN chmod +x mvnw
 RUN ./mvnw clean package -DskipTests
 
-# Runtime stage
-FROM eclipse-temurin:17-jre-focal
-
-WORKDIR /app
-
-COPY --from=builder /app/target/*.jar app.jar
-
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "target/whatsapp-0.0.1-SNAPSHOT.jar"]
